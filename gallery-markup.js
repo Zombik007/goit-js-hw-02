@@ -1,32 +1,19 @@
 import gallery from "./gallery-items.js";
-// console.log(gallery);
-
-// const makeImagesMarkup = ({ preview, original, description }) => {
-//   return `
-//   <li class="gallery__item">
-//     <a
-//       class="gallery__link"
-//       href="${original}"
-//     >
-//       <img
-//             class="gallery__image"
-//             src="${preview}"
-//             data-source="${original}"
-//             alt="${description}"
-//       />
-//     </a>
-//   </li>`;
-// };
 
 const makeImagesMarkup = ({ preview, original, description }) => {
   return `
   <li class="gallery__item">
+    <a
+      class="gallery__link"
+      href="${original}"
+    >
       <img
             class="gallery__image"
             src="${preview}"
             data-source="${original}"
             alt="${description}"
       />
+    </a>
   </li>`;
 };
 
@@ -70,8 +57,6 @@ function onLigthboxOverlayCloseClick() {
   lightboxImage.alt = "";
 }
 
-// document.addEventListener("keydown", onEscBtnClickModalClose());
-
 document.addEventListener("keydown", onEscBtnClickModalClose);
 
 function onEscBtnClickModalClose(event) {
@@ -83,16 +68,32 @@ function onEscBtnClickModalClose(event) {
   }
 }
 
-/* <div class="lightbox js-lightbox">
-  <div class="lightbox__overlay"></div>
+document.addEventListener("keydown", onArrowBtnClickChangeImage);
 
-  <div class="lightbox__content">
-    <img class="lightbox__image" src="" alt="" />
-  </div>
+function onArrowBtnClickChangeImage(event) {
+  onRightArrowBtnClick(event);
+  onLeftArrowBtnClick(event);
+}
 
-  <button
-    type="button"
-    class="lightbox__button"
-    data-action="close-lightbox"
-  ></button>
-</div>; */
+let i = 0;
+function onRightArrowBtnClick(event) {
+  if (event.key === "ArrowRight") {
+    i++;
+    if (i == gallery.length) {
+      i = 0;
+    }
+    lightboxImage.src = gallery[i].original;
+    lightboxImage.alt = gallery[i].description;
+  }
+}
+
+function onLeftArrowBtnClick(event) {
+  if (event.key === "ArrowLeft") {
+    i--;
+    if (i == -1) {
+      i = gallery.length - 1;
+    }
+    lightboxImage.src = gallery[i].original;
+    lightboxImage.alt = gallery[i].description;
+  }
+}
