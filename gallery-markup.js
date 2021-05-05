@@ -62,7 +62,6 @@ function onModalWindowBtnClick(evt) {
     }
     lightboxImage.src = gallery[i].original;
     lightboxImage.alt = gallery[i].description;
-    console.log("ArrowRight");
   }
   if (evt.key === "ArrowLeft") {
     i--;
@@ -71,7 +70,6 @@ function onModalWindowBtnClick(evt) {
     }
     lightboxImage.src = gallery[i].original;
     lightboxImage.alt = gallery[i].description;
-    console.log("ArrowLeft");
   }
 }
 
