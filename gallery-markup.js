@@ -1,16 +1,18 @@
 import gallery from "./gallery-items.js";
 
-const makeImagesMarkup = ({ preview, original, description }) => {
+const makeImagesMarkup = ({ preview, original, description }, index) => {
   return `
   <li class="gallery__item">
     <a
       class="gallery__link"
       href="${original}"
+      data-index="${index}"
     >
       <img
             class="gallery__image"
             src="${preview}"
             data-source="${original}"
+            data-index="${index}"
             alt="${description}"
       />
     </a>
@@ -31,6 +33,7 @@ galleryContainer.addEventListener("click", onGalleryContainerClick);
 lightboxOverlay.addEventListener("click", onLigthboxOverlayCloseClick);
 lightboxBtnClose.addEventListener("click", onLigthboxBtnCloseClick);
 
+let i;
 function onGalleryContainerClick(evt) {
   if (!evt.target.classList.contains("gallery__link")) {
     evt.preventDefault();
@@ -43,57 +46,46 @@ function onGalleryContainerClick(evt) {
   lightboxContainer.classList.add("is-open");
   lightboxImage.src = evt.target.dataset.source;
   lightboxImage.alt = evt.target.alt;
+
+  document.addEventListener("keydown", onModalWindowBtnClick);
+  i = evt.target.dataset.index;
 }
 
-function onLigthboxBtnCloseClick() {
-  lightboxContainer.classList.remove("is-open");
-  lightboxImage.src = "";
-  lightboxImage.alt = "";
-}
-
-function onLigthboxOverlayCloseClick() {
-  lightboxContainer.classList.remove("is-open");
-  lightboxImage.src = "";
-  lightboxImage.alt = "";
-}
-
-document.addEventListener("keydown", onEscBtnClickModalClose);
-
-function onEscBtnClickModalClose(event) {
-  if (event.key === "Escape") {
-    lightboxContainer.classList.remove("is-open");
-    lightboxImage.src = "";
-    lightboxImage.alt = "";
-    console.log("Key: ", event.key);
+function onModalWindowBtnClick(evt) {
+  if (evt.key === "Escape") {
+    closeModalWindow();
   }
-}
-
-document.addEventListener("keydown", onArrowBtnClickChangeImage);
-
-function onArrowBtnClickChangeImage(event) {
-  onRightArrowBtnClick(event);
-  onLeftArrowBtnClick(event);
-}
-
-let i = 0;
-function onRightArrowBtnClick(event) {
-  if (event.key === "ArrowRight") {
+  if (evt.key === "ArrowRight") {
     i++;
     if (i == gallery.length) {
       i = 0;
     }
     lightboxImage.src = gallery[i].original;
     lightboxImage.alt = gallery[i].description;
+    console.log("ArrowRight");
   }
-}
-
-function onLeftArrowBtnClick(event) {
-  if (event.key === "ArrowLeft") {
+  if (evt.key === "ArrowLeft") {
     i--;
     if (i == -1) {
       i = gallery.length - 1;
     }
     lightboxImage.src = gallery[i].original;
     lightboxImage.alt = gallery[i].description;
+    console.log("ArrowLeft");
   }
+}
+
+function closeModalWindow() {
+  lightboxContainer.classList.remove("is-open");
+  lightboxImage.src = "";
+  lightboxImage.alt = "";
+  document.removeEventListener("keydown", onModalWindowBtnClick);
+}
+
+function onLigthboxBtnCloseClick() {
+  closeModalWindow();
+}
+
+function onLigthboxOverlayCloseClick() {
+  closeModalWindow();
 }
