@@ -6,7 +6,6 @@ const makeImagesMarkup = ({ preview, original, description }, index) => {
     <a
       class="gallery__link"
       href="${original}"
-      data-index="${index}"
     >
       <img
             class="gallery__image"
@@ -30,8 +29,8 @@ const makeImagesList = gallery.map(makeImagesMarkup).join("");
 galleryContainer.insertAdjacentHTML("afterbegin", makeImagesList);
 
 galleryContainer.addEventListener("click", onGalleryContainerClick);
-lightboxOverlay.addEventListener("click", onLigthboxOverlayCloseClick);
-lightboxBtnClose.addEventListener("click", onLigthboxBtnCloseClick);
+lightboxOverlay.addEventListener("click", closeModalWindow);
+lightboxBtnClose.addEventListener("click", closeModalWindow);
 
 let i;
 function onGalleryContainerClick(evt) {
@@ -78,12 +77,4 @@ function closeModalWindow() {
   lightboxImage.src = "";
   lightboxImage.alt = "";
   document.removeEventListener("keydown", onModalWindowBtnClick);
-}
-
-function onLigthboxBtnCloseClick() {
-  closeModalWindow();
-}
-
-function onLigthboxOverlayCloseClick() {
-  closeModalWindow();
 }
